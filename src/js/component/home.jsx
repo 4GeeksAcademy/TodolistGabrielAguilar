@@ -5,47 +5,44 @@ import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
 const Home = () => {
-  const [list, setList] = useState([]);
-  const [inputValue, setInputValue] = useState("");
-
-  return (
-    <div className="TodoList">
-      <h1>Todolist</h1>
-      <ul>
-        {list.length ? (
-          list.map((list) => (
-            <li key={list.id}>
-              {list.title}
-              <button
-                onClick={() => setList((list) => list.filter((l) => l.id !== list.id))}
-               
-              >
-                X
-              </button>
-            </li>
-          ))
-        ) : (
-          <li>No hay tareas, añadir tareas</li>
-        )}
-      </ul>
-	 
-      <input
-        type="text"
-        placeholder="Añadir tarea"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            const tarea = inputValue;
-            setList((list) => [...list, { title: tarea }]);
-            setInputValue("");
-          }
-        }}
-      />
-	   <div className="list-count">{list.length} item left</div>
-    
-    </div>
-  );
+	const[ inputValue,setInputValue ] = useState("");
+	const[list,setList ] = useState([]);
+	return (
+		<div className="container">
+			<h1>TodoList</h1>
+			<ul>
+				<li>
+					<input id="listInput"
+						type = "text"
+						onChange = {(e)=> setInputValue(e.target.value)}
+						value = {inputValue}
+						onKeyDown={(e)=> {
+							if(e.key === "Enter"){
+								setList(list.concat(inputValue));
+								setInputValue('');
+							}
+						}}
+						placeholder = "Agregar Tareas">
+						
+					</input>
+				</li>
+				{list.map((item,index)=>(
+					<li key="index">{item}{" "}
+						<i 
+							className= "fas fa-solid fa-trash" 
+							onClick={()=>
+								setList(
+									list.filter(
+										(t,currentIndex)=> index != currentIndex)
+										)
+						}></i>
+					</li>
+				))}
+				
+			</ul>
+			<div>{list.length} items left</div>
+		</div>
+	);
 };
 
 export default Home;
